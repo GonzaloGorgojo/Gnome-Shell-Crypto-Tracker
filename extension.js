@@ -21,6 +21,7 @@
 const ExtensionUtils = imports.misc.extensionUtils;
 
 const { GObject, St, Soup, Clutter } = imports.gi;
+const GLib = imports.gi.GLib;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
 const PopupMenu = imports.ui.popupMenu;
@@ -38,7 +39,7 @@ const Indicator = GObject.registerClass(
       this.cryptoValues;
 
       this.label = new St.Label({
-        text: _("Loading..."),
+        text: _("Fetching crypto prices..."),
         style_class: "bitcoin",
         x_expand: true,
         x_align: Clutter.ActorAlign.START,
@@ -80,6 +81,11 @@ const Indicator = GObject.registerClass(
       cryptoBox.add(this.ethereumEUR);
 
       this._updatePrice();
+
+      this._timerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 300000, () => {
+        this._updatePrice();
+        return true; // Return true to keep the timer running
+      });
     }
 
     async _updatePrice() {
@@ -105,13 +111,13 @@ const Indicator = GObject.registerClass(
       let text = "";
 
       if (this.bitcoinUSD.state) {
-        text += `BTC/U$D: ${bitcoinUsd} `;
+        text += `BTC/USD: ${bitcoinUsd} `;
       }
       if (this.bitcoinEUR.state) {
         text += `BTC/EUR: ${bitcoinEur} `;
       }
       if (this.ethereumUSD.state) {
-        text += `ETH/U$D: ${ethereumUsd} `;
+        text += `ETH/USD: ${ethereumUsd} `;
       }
       if (this.ethereumEUR.state) {
         text += `ETH/EUR: ${ethereumEur} `;
