@@ -23,24 +23,61 @@ const ExtensionUtils = imports.misc.extensionUtils;
 const { GObject, St, Soup, Clutter } = imports.gi;
 const Main = imports.ui.main;
 const PanelMenu = imports.ui.panelMenu;
+const PopupMenu = imports.ui.popupMenu;
+
 const Me = ExtensionUtils.getCurrentExtension();
 
 const COINGECKO_API_URL =
-  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd";
+  "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum&vs_currencies=usd,eur";
 
 const Indicator = GObject.registerClass(
   class Indicator extends PanelMenu.Button {
     _init() {
       super._init(0.0, `${Me.metadata.name} Indicator`, false);
 
+      this.cryptoValues;
+
       this.label = new St.Label({
         text: _("Loading..."),
         style_class: "bitcoin",
-        x_align: Clutter.ActorAlign.CENTER,
+        x_expand: true,
+        x_align: Clutter.ActorAlign.START,
         y_align: Clutter.ActorAlign.CENTER,
+        reactive: true,
       });
 
       this.add_child(this.label);
+
+      let cryptoSubMenu = new PopupMenu.PopupBaseMenuItem({
+        reactive: false,
+        can_focus: false,
+      });
+      this.menu.addMenuItem(cryptoSubMenu);
+
+      let cryptoBox = new St.BoxLayout({
+        vertical: true,
+      });
+      cryptoSubMenu.actor.add_child(cryptoBox);
+
+      // Bitcoin/USD
+      this.bitcoinUSD = new PopupMenu.PopupSwitchMenuItem("BTC/USD", true);
+      this.bitcoinUSD.connect("toggled", () => this._updateBoxDisplay());
+      cryptoBox.add(this.bitcoinUSD);
+
+      // Bitcoin/EUR
+      this.bitcoinEUR = new PopupMenu.PopupSwitchMenuItem("BTC/EUR", false);
+      this.bitcoinEUR.connect("toggled", () => this._updateBoxDisplay());
+      cryptoBox.add(this.bitcoinEUR);
+
+      // Ethereum/USD
+      this.ethereumUSD = new PopupMenu.PopupSwitchMenuItem("ETH/USD", false);
+      this.ethereumUSD.connect("toggled", () => this._updateBoxDisplay());
+      cryptoBox.add(this.ethereumUSD);
+
+      // Ethereum/EUR
+      this.ethereumEUR = new PopupMenu.PopupSwitchMenuItem("ETH/EUR", false);
+      this.ethereumEUR.connect("toggled", () => this._updateBoxDisplay());
+      cryptoBox.add(this.ethereumEUR);
 
       this._updatePrice();
     }
@@ -52,19 +89,39 @@ const Indicator = GObject.registerClass(
 
         httpSession.queue_message(message, (_, res) => {
           let data = res.response_body.data;
-          let response = JSON.parse(data);
-          let bitcoinUsd = response.bitcoin.usd;
-          // let bitcoinEur = response.bitcoin.eur;
-          // let ethereumUsd = response.ethereum.usd;
-          // let ethereumEur = response.ethereum.eur;
-          this.label.set_text(`BTC/U$D: ${bitcoinUsd}`);
-          // this.label.set_text(`BTC/EUR: ${bitcoinEur}`);
-          // this.label.set_text(`ETH/U$D: ${ethereumUsd}`);
-          // this.label.set_text(`ETH/EUR: ${ethereumEur}`);
+          this.cryptoValues = JSON.parse(data);
+          this._updateBoxDisplay();
         });
       } catch (e) {
-        logError(e, "Failed to fetch Bitcoin price");
+        logError(e, "Failed to fetch Crypto prices");
       }
+    }
+
+    async _updateBoxDisplay() {
+      let bitcoinUsd = this.cryptoValues.bitcoin.usd;
+      let bitcoinEur = this.cryptoValues.bitcoin.eur;
+      let ethereumUsd = this.cryptoValues.ethereum.usd;
+      let ethereumEur = this.cryptoValues.ethereum.eur;
+      let text = "";
+
+      if (this.bitcoinUSD.state) {
+        text += `BTC/U$D: ${bitcoinUsd} `;
+      }
+      if (this.bitcoinEUR.state) {
+        text += `BTC/EUR: ${bitcoinEur} `;
+      }
+      if (this.ethereumUSD.state) {
+        text += `ETH/U$D: ${ethereumUsd} `;
+      }
+      if (this.ethereumEUR.state) {
+        text += `ETH/EUR: ${ethereumEur} `;
+      }
+
+      if (text === "") {
+        text = "No Coin Selected";
+      }
+
+      this.label.set_text(text);
     }
   }
 );
