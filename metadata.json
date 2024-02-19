@@ -1,0 +1,7 @@
+{
+  "name": "crypto-tracker@gongorgojo.com",
+  "description": "Simple Gnome shell crypto tracker",
+  "uuid": "crypto-tracker@gongorgojo.com",
+  "url": "https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker",
+  "shell-version": ["42"]
+}
