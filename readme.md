@@ -35,10 +35,8 @@ Enable the extension via Gnome Tweaks or with:
 
 Video Tutorial:
 
-<video width="640" height="360" controls>
-  <source src="https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker/blob/chore/media-branch/examplevideo.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+
+https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker/assets/49298587/a5d03385-08f0-44b8-8f04-6a5c5111089e
 
 ## Supported Coins/Fiat pars
 
