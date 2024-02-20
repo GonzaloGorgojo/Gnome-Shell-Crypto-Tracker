@@ -1,9 +1,0 @@
-<schemalist gettext-domain="Gnome-Shell-Crypto-Tracker">
-  <schema id="org.gnome.shell.extensions.Gnome-Shell-Crypto-Tracker" path="/org/gnome/shell/extensions/Gnome-Shell-Crypto-Tracker/">
-    <key name="show-crypto" type="b">
-      <default>true</default>
-      <summary>Show Crypto prices</summary>
-      <description>Toggle to show Crypto prices.</description>
-    </key>
-  </schema>
-</schemalist>

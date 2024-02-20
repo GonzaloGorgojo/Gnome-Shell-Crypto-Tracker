@@ -1,7 +1,0 @@
-{
-  "name": "crypto-tracker@gongorgojo.com",
-  "description": "Simple extension for Gnome-Shell to track price of Crypto currencies",
-  "uuid": "crypto-tracker@gongorgojo.com",
-  "url": "https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker",
-  "shell-version": ["42", "43", "44"]
-}
