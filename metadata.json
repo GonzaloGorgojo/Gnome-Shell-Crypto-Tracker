@@ -1,6 +1,6 @@
 {
-  "name": "crypto-tracker@gongorgojo.com",
-  "description": "Simple extension for Gnome-Shell to track price of Crypto currencies",
+  "name": "Simple Crypto Tracker",
+  "description": "This is a simple Gnome-Shell extension designed to track cryptocurrency prices.\n\nSupported pairs include: - BTC/USD\n- BTC/EUR\n- ETH/USD\n- ETH/EUR  \n\nThe extension refreshes prices every 5 minutes using the CoinGecko API to retrieve data.",
   "uuid": "crypto-tracker@gongorgojo.com",
   "url": "https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker",
   "shell-version": ["42", "43", "44"]
