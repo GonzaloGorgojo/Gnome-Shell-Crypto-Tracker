@@ -125,6 +125,11 @@ class Extension {
   disable() {
     this._indicator.destroy();
     this._indicator = null;
+
+    if (this._timerId) {
+      GLib.Source.remove(this._timerId);
+      this._timerId = null;
+    }
   }
 }
 
