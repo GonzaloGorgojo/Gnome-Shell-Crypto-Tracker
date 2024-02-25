@@ -9,6 +9,10 @@ Super simple extension for Gnome-Shell to track price of Crypto currencies. Pric
 
 <br />
 
+## Gnome org Installation (Super Easy)
+
+Go to [Simple Crypto Tracker Extension](https://extensions.gnome.org/extension/6777/crypto-trackergongorgojocom/) on gnome extensions page, turn ON and click install.
+
 ## Manual Installation
 
 Clone the git repo by https:
@@ -35,7 +39,6 @@ Enable the extension via Gnome Tweaks or with:
 
 Video Tutorial:
 
-
 https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker/assets/49298587/a5d03385-08f0-44b8-8f04-6a5c5111089e
 
 ## Supported Coins/Fiat pars
@@ -51,8 +54,5 @@ ETH/EUR
 </a>
  <a href="https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker/blob/master/LICENSE">
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg">
- </a>
- <a href="https://github.com/GonzaloGorgojo/Gnome-Shell-Crypto-Tracker">
-  <img src="https://badges.frapsoft.com/os/v2/open-source.png?v=103">
  </a>
  </p>
