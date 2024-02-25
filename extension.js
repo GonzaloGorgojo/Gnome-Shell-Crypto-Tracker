@@ -20,7 +20,6 @@ const Indicator = GObject.registerClass(
 
       this.label = new St.Label({
         text: _("Fetching crypto prices..."),
-        style_class: "bitcoin",
         x_expand: true,
         x_align: Clutter.ActorAlign.START,
         y_align: Clutter.ActorAlign.CENTER,
@@ -84,23 +83,35 @@ const Indicator = GObject.registerClass(
     }
 
     async _updateBoxDisplay() {
-      let bitcoinUsd = this.cryptoValues.bitcoin.usd;
-      let bitcoinEur = this.cryptoValues.bitcoin.eur;
-      let ethereumUsd = this.cryptoValues.ethereum.usd;
-      let ethereumEur = this.cryptoValues.ethereum.eur;
+      let bitcoinUsd = this.cryptoValues.bitcoin.usd.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+      let bitcoinEur = this.cryptoValues.bitcoin.eur.toLocaleString("en-US", {
+        style: "currency",
+        currency: "EUR",
+      });
+      let ethereumUsd = this.cryptoValues.ethereum.usd.toLocaleString("en-US", {
+        style: "currency",
+        currency: "USD",
+      });
+      let ethereumEur = this.cryptoValues.ethereum.eur.toLocaleString("en-US", {
+        style: "currency",
+        currency: "EUR",
+      });
       let text = "";
 
       if (this.bitcoinUSD.state) {
-        text += `BTC/USD: ${bitcoinUsd} `;
+        text += `BTC/USD: ${bitcoinUsd}  `;
       }
       if (this.bitcoinEUR.state) {
-        text += `BTC/EUR: ${bitcoinEur} `;
+        text += `BTC/EUR: ${bitcoinEur}  `;
       }
       if (this.ethereumUSD.state) {
-        text += `ETH/USD: ${ethereumUsd} `;
+        text += `ETH/USD: ${ethereumUsd}  `;
       }
       if (this.ethereumEUR.state) {
-        text += `ETH/EUR: ${ethereumEur} `;
+        text += `ETH/EUR: ${ethereumEur}  `;
       }
 
       if (text === "") {
@@ -108,6 +119,13 @@ const Indicator = GObject.registerClass(
       }
 
       this.label.set_text(text);
+    }
+
+    _destroyTimer() {
+      if (this._timerId) {
+        GLib.Source.remove(this._timerId);
+        this._timerId = null;
+      }
     }
   }
 );
@@ -123,13 +141,10 @@ class Extension {
   }
 
   disable() {
+    this._indicator._destroyTimer();
+
     this._indicator.destroy();
     this._indicator = null;
-
-    if (this._timerId) {
-      GLib.Source.remove(this._timerId);
-      this._timerId = null;
-    }
   }
 }
 
